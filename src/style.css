@@ -1,0 +1,10 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  font-family: "Kaisei Tokumin", serif;
+}
+:root {
+  --sidebar-bg: #014728;
+  --sidebar-width: 350px;
+  --sidebar-collapsed-width: 90px;
+}
