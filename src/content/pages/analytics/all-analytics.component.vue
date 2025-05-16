@@ -19,7 +19,7 @@ const analytics = reactive({
     },
     {
       nombre: 'Cultivos de Camote',
-      img: 'public/recommendations/cultivo-yuca.jpg',
+      img: 'public/recommendations/cultivo-camote.jpg',
       estimaciones: [
         'Consumo proyectado de agua: 12,500 litros por hectárea restante',
         'Producción esperada: 3.8 toneladas por hectárea'

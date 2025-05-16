@@ -1,11 +1,16 @@
 <script setup>
-import Sidebar from "./shared/components/sidebar.component.vue";
+import Sidebar from "./shared/components/sidebar.component.vue"
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 </script>
 
 <template>
   <div id="app">
-    <Sidebar />
-    <div class="main">
+    <!-- Layout normal (sidebar + toolbar) solo en rutas distintas de /login -->
+    <Sidebar v-if="route.path !== '/login'" />
+
+    <div v-if="route.path !== '/login'" class="main">
       <div class="toolbar">
         <input type="text" class="search-input" placeholder="NUTRICONTROL" />
         <div class="toolbar-icons">
@@ -21,6 +26,9 @@ import Sidebar from "./shared/components/sidebar.component.vue";
         <router-view />
       </main>
     </div>
+
+    <!-- Solo el contenido de la vista (por ej. login) si la ruta es /login -->
+    <router-view v-if="route.path === '/login'" />
   </div>
 </template>
 
