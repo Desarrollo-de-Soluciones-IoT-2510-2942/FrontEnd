@@ -11,7 +11,7 @@
     </div>
     <hr class="separator" />
     <nav class="nav-links">
-      <router-link to="/" class="nav-link">
+      <router-link to="/home" class="nav-link">
         <img src="/sidebar/icons/home-icon.png" width="30" height="30" alt="" />
         <span>Inicio</span>
       </router-link>

@@ -7,18 +7,31 @@ const route = useRoute()
 
 <template>
   <div id="app">
-    <!-- Layout normal (sidebar + toolbar) solo en rutas distintas de /login -->
-    <Sidebar v-if="route.path !== '/login'" />
+    <!-- Mostrar sidebar + toolbar solo si NO estamos en /login ni en /register -->
+    <Sidebar v-if="route.path !== '/login' && route.path !== '/register'" />
 
-    <div v-if="route.path !== '/login'" class="main">
+    <div
+        v-if="route.path !== '/login' && route.path !== '/register'"
+        class="main"
+    >
       <div class="toolbar">
         <input type="text" class="search-input" placeholder="NUTRICONTROL" />
         <div class="toolbar-icons">
           <button class="icon-btn">
-            <img src="/topbar/alerts-icon.png" width="35" height="35" alt="Alerts" />
+            <img
+                src="/topbar/alerts-icon.png"
+                width="35"
+                height="35"
+                alt="Alerts"
+            />
           </button>
           <router-link to="/profile" class="icon-btn">
-            <img src="/topbar/profile-icon.png" width="35" height="35" alt="Profile" />
+            <img
+                src="/topbar/profile-icon.png"
+                width="35"
+                height="35"
+                alt="Profile"
+            />
           </router-link>
         </div>
       </div>
@@ -27,8 +40,8 @@ const route = useRoute()
       </main>
     </div>
 
-    <!-- Solo el contenido de la vista (por ej. login) si la ruta es /login -->
-    <router-view v-if="route.path === '/login'" />
+    <!-- Para /login y /register solo renderizamos la vista -->
+    <router-view v-if="route.path === '/login' || route.path === '/register'" />
   </div>
 </template>
 
@@ -48,7 +61,7 @@ const route = useRoute()
   justify-content: space-between;
   padding: 10px 20px;
   background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 .search-input {
   width: 600px;

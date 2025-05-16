@@ -6,6 +6,7 @@ import Profile from "../content/pages/profile/profile.component.vue";
 import EditProfile from "../content/pages/profile/components/edit-profile.component.vue";
 import AllAnalytics from "../content/pages/analytics/all-analytics.component.vue";
 import Login from "../content/pages/login/login.component.vue";
+import Register from "../content/pages/register/register.component.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -13,6 +14,7 @@ const router = createRouter({
 
         { path: '/', redirect: '/login' },
         { path: '/login', component: Login },
+        { path: '/register', component: Register },
 
         { path: '/', redirect: '/home'},
         { path: '/home', component: Home},

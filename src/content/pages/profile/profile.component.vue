@@ -15,6 +15,10 @@ const user = reactive({
 const goEdit = () => {
   router.push('/edit-profile')
 }
+
+const logout = () => {
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -35,7 +39,7 @@ const goEdit = () => {
     </div>
     <button class="btn-edit" @click="goEdit">Editar Perfil</button>
     <div class="logout-container">
-      <button class="btn-logout">Cerrar sesión</button>
+      <button class="btn-logout" @click="logout">Cerrar sesión</button>
     </div>
   </div>
 </template>
