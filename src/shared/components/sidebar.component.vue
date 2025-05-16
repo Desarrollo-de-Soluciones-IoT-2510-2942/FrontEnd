@@ -23,7 +23,7 @@
         <img src="/sidebar/icons/recommendation-icon.png" width="30" height="30" alt="" />
         <span>Recomendaciones</span>
       </router-link>
-      <router-link to="/analisis-predictivo" class="nav-link">
+      <router-link to="/all-analytics" class="nav-link">
         <img src="/sidebar/icons/analytics-icon.png" width="30" height="30" alt="" />
         <span>Análisis Predictivo</span>
       </router-link>

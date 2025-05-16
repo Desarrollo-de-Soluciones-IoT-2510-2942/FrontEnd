@@ -15,7 +15,7 @@ const recommendations = reactive({
     },
     {
       nombre: 'Cultivos de Yuca',
-      img: '/recommendatios/cultivo-yuca.jpg',
+      img: 'public/recommendations/cultivo-yuca.jpg',
       items: [
         'Evitar exceso de riego si hay lluvias acumuladas',
         'Verificar niveles de potasio durante fase de engrosamiento de raíces',

@@ -12,9 +12,9 @@ import Sidebar from "./shared/components/sidebar.component.vue";
           <button class="icon-btn">
             <img src="/topbar/alerts-icon.png" width="35" height="35" alt="Alerts" />
           </button>
-          <button class="icon-btn">
+          <router-link to="/profile" class="icon-btn">
             <img src="/topbar/profile-icon.png" width="35" height="35" alt="Profile" />
-          </button>
+          </router-link>
         </div>
       </div>
       <main class="content">
@@ -50,22 +50,39 @@ import Sidebar from "./shared/components/sidebar.component.vue";
   font-size: 16px;
   box-sizing: border-box;
 }
-.search-input::placeholder { color: #014728; }
-.toolbar-icons { display: flex; align-items: center; gap: 15px; }
-.icon-btn { background: none; border: none; padding: 0; cursor: pointer; }
+.search-input::placeholder {
+  color: #014728;
+}
+.toolbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
 .content {
   flex: 1;
   overflow-y: auto;
 }
 
 @media (max-width: 600px) {
-  #app { flex-direction: column; }
+  #app {
+    flex-direction: column;
+  }
   .toolbar {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
   }
-  .search-input { width: 100%; }
-  .toolbar-icons { justify-content: flex-end; }
+  .search-input {
+    width: 100%;
+  }
+  .toolbar-icons {
+    justify-content: flex-end;
+  }
 }
 </style>
