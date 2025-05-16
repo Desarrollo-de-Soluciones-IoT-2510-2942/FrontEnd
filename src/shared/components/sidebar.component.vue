@@ -19,7 +19,7 @@
         <img src="/sidebar/icons/crop-icon.png" width="30" height="30" alt="" />
         <span>Campos Agrícolas</span>
       </router-link>
-      <router-link to="/recomendaciones" class="nav-link">
+      <router-link to="/recommendations" class="nav-link">
         <img src="/sidebar/icons/recommendation-icon.png" width="30" height="30" alt="" />
         <span>Recomendaciones</span>
       </router-link>
