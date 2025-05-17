@@ -7,6 +7,7 @@ import EditProfile from "../content/pages/profile/components/edit-profile.compon
 import AllAnalytics from "../content/pages/analytics/all-analytics.component.vue";
 import Login from "../content/pages/login/login.component.vue";
 import Register from "../content/pages/register/register.component.vue";
+import AllCrops from "../content/pages/crops/all-crops.component.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -23,6 +24,7 @@ const router = createRouter({
         { path: '/profile', component: Profile},
         { path: '/edit-profile', component: EditProfile},
         { path: '/all-analytics', component: AllAnalytics},
+        { path: '/crops', component: AllCrops},
     ],
 });
 
