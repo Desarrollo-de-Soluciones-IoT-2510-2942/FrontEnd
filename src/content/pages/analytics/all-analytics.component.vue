@@ -6,7 +6,7 @@ const analytics = reactive({
   cultivos: [
     {
       nombre: 'Cultivos de Papas',
-      img: 'public/recommendations/cultivo-papa.jpg',
+      img: 'recommendations/cultivo-papa.jpg',
       estimaciones: [
         'Consumo proyectado de agua: 12,500 litros por hectárea restante',
         'Producción esperada: 3.8 toneladas por hectárea'
@@ -19,7 +19,7 @@ const analytics = reactive({
     },
     {
       nombre: 'Cultivos de Camote',
-      img: 'public/recommendations/cultivo-camote.jpg',
+      img: 'recommendations/cultivo-camote.jpg',
       estimaciones: [
         'Consumo proyectado de agua: 12,500 litros por hectárea restante',
         'Producción esperada: 3.8 toneladas por hectárea'

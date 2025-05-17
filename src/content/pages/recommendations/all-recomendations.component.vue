@@ -6,7 +6,7 @@ const recommendations = reactive({
   cultivos: [
     {
       nombre: 'Cultivos de Papas',
-      img: 'public/recommendations/cultivo-papa.jpg',
+      img: 'recommendations/cultivo-papa.jpg',
       items: [
         'Activar riego por goteo si la humedad del suelo está por debajo del 60%',
         'Ajustar pH del suelo si es menor a 5.5',
@@ -15,7 +15,7 @@ const recommendations = reactive({
     },
     {
       nombre: 'Cultivos de Yuca',
-      img: 'public/recommendations/cultivo-yuca.jpg',
+      img: 'recommendations/cultivo-yuca.jpg',
       items: [
         'Evitar exceso de riego si hay lluvias acumuladas',
         'Verificar niveles de potasio durante fase de engrosamiento de raíces',
