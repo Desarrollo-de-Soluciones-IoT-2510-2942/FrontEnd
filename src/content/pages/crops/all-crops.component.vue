@@ -7,7 +7,12 @@
       Cultivos de <span class="crop-name">{{ campoName }}</span>
     </h2>
     <div class="cultivation-list">
-      <div v-for="cultivo in cultivos" :key="cultivo.id" class="cultivation-card">
+      <div
+          v-for="cultivo in cultivos"
+          :key="cultivo.id"
+          class="cultivation-card"
+          @click="goToDetail"
+      >
         <div class="card-body">
           <img src="/general-icons/crop-icon.png" alt="Cultivo" class="crop-icon"/>
           <div class="cultivation-info">
@@ -20,7 +25,7 @@
       </div>
     </div>
     <button class="add-button" @click="goToAdd">
-      <img src="/general-icons/add-icon.png" alt="Agregar"/>
+      <img src="/general-icons/check-icon.png" alt="Agregar"/>
     </button>
   </div>
 </template>
@@ -36,6 +41,7 @@ const cultivos = ref([
 ])
 const goBack = () => router.push('/fields')
 const goToAdd = () => router.push('/fields')
+const goToDetail = () => router.push('/individual-crop')
 </script>
 
 <style scoped>
@@ -81,6 +87,7 @@ const goToAdd = () => router.push('/fields')
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   width: 520px;
   padding: 26px;
+  cursor: pointer;
 }
 .card-body {
   display: flex;
