@@ -2,11 +2,20 @@
   <div class="all-crops">
     <h2 class="section-title">Tus Campos Agrícolas</h2>
     <div class="crops-list">
-      <div v-for="campo in campos" :key="campo.id" class="crop-card">
+      <div
+          v-for="campo in campos"
+          :key="campo.id"
+          class="crop-card"
+          @click="goToIndividual"
+      >
         <div class="card-header">
-          <img src="/general-icons/field-icon.png" alt="Campo" class="field-icon"/>
-          <div class="edit-btn" @click="goToEdit">
-            <img src="/general-icons/edit-icon.png" alt="Editar"/>
+          <img
+              src="/general-icons/field-icon.png"
+              alt="Campo"
+              class="field-icon"
+          />
+          <div class="edit-btn" @click.stop="goToEdit">
+            <img src="/general-icons/edit-icon.png" alt="Editar" />
           </div>
         </div>
         <div class="card-body">
@@ -26,6 +35,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
 const campos = ref([
   { id: 1, name: 'Campo Huancayo - 1', hectareas: 5, cultivos: 'Papa, Camote', estado: 'Activo' },
   { id: 2, name: 'Campo Huancayo - 2', hectareas: 12, cultivos: 'Lechuga', estado: 'Activo' },
@@ -38,6 +48,11 @@ const goToEdit = () => {
 
 const goToNew = () => {
   router.push('/new-crop')
+}
+
+// Navigate to the individual crop view
+const goToIndividual = () => {
+  router.push('/individual-crop')
 }
 </script>
 
@@ -57,12 +72,14 @@ const goToNew = () => {
   flex-wrap: wrap;
   justify-content: center;
 }
+/* make entire card clickable */
 .crop-card {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   width: 320px;
   padding: 16px;
+  cursor: pointer;
 }
 .card-header {
   position: relative;

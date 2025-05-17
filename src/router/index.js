@@ -10,6 +10,7 @@ import Register from "../content/pages/register/register.component.vue";
 import AllCrops from "../content/pages/crops/all-crops.component.vue";
 import EditCrop from "../content/pages/crops/components/edit-crop.component.vue";
 import CreateCrop from "../content/pages/crops/components/create-crop.component.vue";
+import IndividualCrop from "../content/pages/crops/components/individual-crop.component.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -29,6 +30,7 @@ const router = createRouter({
         { path: '/crops', component: AllCrops},
         { path: '/edit-crop', component: EditCrop},
         { path: '/new-crop', component: CreateCrop},
+        { path: '/individual-crop', component: IndividualCrop},
     ],
 });
 
