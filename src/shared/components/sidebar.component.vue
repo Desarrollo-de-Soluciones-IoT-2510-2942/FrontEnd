@@ -15,7 +15,7 @@
         <img src="/sidebar/icons/home-icon.png" width="30" height="30" alt="" />
         <span>Inicio</span>
       </router-link>
-      <router-link to="/crops" class="nav-link">
+      <router-link to="/fields" class="nav-link">
         <img src="/sidebar/icons/crop-icon.png" width="30" height="30" alt="" />
         <span>Campos Agrícolas</span>
       </router-link>

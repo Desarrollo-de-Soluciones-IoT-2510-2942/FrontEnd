@@ -7,10 +7,10 @@ import EditProfile from "../content/pages/profile/components/edit-profile.compon
 import AllAnalytics from "../content/pages/analytics/all-analytics.component.vue";
 import Login from "../content/pages/login/login.component.vue";
 import Register from "../content/pages/register/register.component.vue";
+import AllFields from "../content/pages/fields/all-fields.component.vue";
+import EditField from "../content/pages/fields/components/edit-field.component.vue";
+import CreateField from "../content/pages/fields/components/create-field.component.vue";
 import AllCrops from "../content/pages/crops/all-crops.component.vue";
-import EditCrop from "../content/pages/crops/components/edit-crop.component.vue";
-import CreateCrop from "../content/pages/crops/components/create-crop.component.vue";
-import IndividualCrop from "../content/pages/crops/components/individual-crop.component.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -27,10 +27,10 @@ const router = createRouter({
         { path: '/profile', component: Profile},
         { path: '/edit-profile', component: EditProfile},
         { path: '/all-analytics', component: AllAnalytics},
+        { path: '/fields', component: AllFields},
+        { path: '/edit-field', component: EditField},
+        { path: '/create-field', component: CreateField},
         { path: '/crops', component: AllCrops},
-        { path: '/edit-crop', component: EditCrop},
-        { path: '/new-crop', component: CreateCrop},
-        { path: '/individual-crop', component: IndividualCrop},
     ],
 });
 

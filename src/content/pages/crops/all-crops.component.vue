@@ -1,123 +1,109 @@
 <template>
-  <div class="all-crops">
-    <h2 class="section-title">Tus Campos Agrícolas</h2>
-    <div class="crops-list">
-      <div
-          v-for="campo in campos"
-          :key="campo.id"
-          class="crop-card"
-          @click="goToIndividual"
-      >
-        <div class="card-header">
-          <img
-              src="/general-icons/field-icon.png"
-              alt="Campo"
-              class="field-icon"
-          />
-          <div class="edit-btn" @click.stop="goToEdit">
-            <img src="/general-icons/edit-icon.png" alt="Editar" />
-          </div>
-        </div>
+  <div class="individual-crop">
+    <button class="btn-return" @click="goBack">
+      <img src="/general-icons/return-icon.png" alt="Regresar"/>
+    </button>
+    <h2 class="section-title">
+      Cultivos de <span class="crop-name">{{ campoName }}</span>
+    </h2>
+    <div class="cultivation-list">
+      <div v-for="cultivo in cultivos" :key="cultivo.id" class="cultivation-card">
         <div class="card-body">
-          <h3 class="crop-title">{{ campo.name }}</h3>
-          <p>Hectáreas: {{ campo.hectareas }}</p>
-          <p>Cultivos: {{ campo.cultivos }}</p>
-          <p>Estado: {{ campo.estado }}</p>
+          <img src="/general-icons/crop-icon.png" alt="Cultivo" class="crop-icon"/>
+          <div class="cultivation-info">
+            <h3 class="cultivation-title">{{ cultivo.name }}</h3>
+            <p>Fecha de siembra: {{ cultivo.date }}</p>
+            <p>Días desde siembra: {{ cultivo.days }} días</p>
+            <p>Dispositivos IoT: {{ cultivo.devices }} conectados</p>
+          </div>
         </div>
       </div>
     </div>
-    <button class="add-button" @click="goToNew">+</button>
+    <button class="add-button" @click="goToAdd">
+      <img src="/general-icons/add-icon.png" alt="Agregar"/>
+    </button>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
 const router = useRouter()
-
-const campos = ref([
-  { id: 1, name: 'Campo Huancayo - 1', hectareas: 5, cultivos: 'Papa, Camote', estado: 'Activo' },
-  { id: 2, name: 'Campo Huancayo - 2', hectareas: 12, cultivos: 'Lechuga', estado: 'Activo' },
-  { id: 3, name: 'Campo Huancayo - 3', hectareas: 4, cultivos: 'Yuca, Papa', estado: 'Activo' }
+const campoName = 'Campo Huancayo - 1'
+const cultivos = ref([
+  { id: 1, name: 'Cultivo de Papas', date: '09/02/2025', days: 54, devices: 2 },
+  { id: 2, name: 'Cultivo de Camote', date: '14/02/2025', days: 50, devices: 3 }
 ])
-
-const goToEdit = () => {
-  router.push('/edit-crop')
-}
-
-const goToNew = () => {
-  router.push('/new-crop')
-}
-
-// Navigate to the individual crop view
-const goToIndividual = () => {
-  router.push('/individual-crop')
-}
+const goBack = () => router.push('/fields')
+const goToAdd = () => router.push('/fields')
 </script>
 
 <style scoped>
-.all-crops {
+.individual-crop {
   position: relative;
-  padding: 30px;
+  padding: 70px;
+}
+.btn-return {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 50px;
+  height: 50px;
+  background-color: #004225;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.btn-return img {
+  width: 20px;
+  height: 20px;
 }
 .section-title {
-  font-size: 24px;
+  font-size: 30px;
   color: #004225;
-  margin-bottom: 16px;
+  margin: 16px 0;
 }
-.crops-list {
+.crop-name {
+  color: #917529;
+}
+.cultivation-list {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
 }
-/* make entire card clickable */
-.crop-card {
+.cultivation-card {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  width: 320px;
-  padding: 16px;
-  cursor: pointer;
+  width: 520px;
+  padding: 26px;
 }
-.card-header {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 12px;
-}
-.field-icon {
-  width: 200px;
-  height: 200px;
-}
-.edit-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 40px;
-  height: 40px;
-  background-color: #004225;
-  border-radius: 50%;
+.card-body {
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1;
-  cursor: pointer;
+  gap: 46px;
 }
-.edit-btn img {
-  width: 20px;
-  height: 20px;
+.crop-icon {
+  width: 150px;
+  height: 150px;
 }
-.crop-title {
-  font-size: 26px;
+.cultivation-info {
+  display: flex;
+  flex-direction: column;
+}
+.cultivation-title {
+  font-size: 25px;
   color: #004225;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
-.card-body p {
-  font-size: 24px;
+.cultivation-info p {
+  font-size: 18px;
   color: #333;
-  margin: 4px 0;
+  margin: 2px 0;
 }
 .add-button {
   position: fixed;
@@ -125,12 +111,17 @@ const goToIndividual = () => {
   right: 24px;
   width: 56px;
   height: 56px;
-  border-radius: 50%;
   background-color: #004225;
-  color: white;
-  font-size: 24px;
   border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.add-button img {
+  width: 24px;
+  height: 24px;
 }
 </style>
