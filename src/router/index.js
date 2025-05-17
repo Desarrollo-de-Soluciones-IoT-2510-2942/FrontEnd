@@ -8,6 +8,8 @@ import AllAnalytics from "../content/pages/analytics/all-analytics.component.vue
 import Login from "../content/pages/login/login.component.vue";
 import Register from "../content/pages/register/register.component.vue";
 import AllCrops from "../content/pages/crops/all-crops.component.vue";
+import EditCrop from "../content/pages/crops/components/edit-crop.component.vue";
+import CreateCrop from "../content/pages/crops/components/create-crop.component.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -25,6 +27,8 @@ const router = createRouter({
         { path: '/edit-profile', component: EditProfile},
         { path: '/all-analytics', component: AllAnalytics},
         { path: '/crops', component: AllCrops},
+        { path: '/edit-crop', component: EditCrop},
+        { path: '/new-crop', component: CreateCrop},
     ],
 });
 

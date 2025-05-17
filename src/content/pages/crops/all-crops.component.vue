@@ -5,7 +5,7 @@
       <div v-for="campo in campos" :key="campo.id" class="crop-card">
         <div class="card-header">
           <img src="/general-icons/field-icon.png" alt="Campo" class="field-icon"/>
-          <div class="edit-btn">
+          <div class="edit-btn" @click="goToEdit">
             <img src="/general-icons/edit-icon.png" alt="Editar"/>
           </div>
         </div>
@@ -17,18 +17,28 @@
         </div>
       </div>
     </div>
-    <button class="add-button">+</button>
+    <button class="add-button" @click="goToNew">+</button>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const campos = ref([
   { id: 1, name: 'Campo Huancayo - 1', hectareas: 5, cultivos: 'Papa, Camote', estado: 'Activo' },
   { id: 2, name: 'Campo Huancayo - 2', hectareas: 12, cultivos: 'Lechuga', estado: 'Activo' },
   { id: 3, name: 'Campo Huancayo - 3', hectareas: 4, cultivos: 'Yuca, Papa', estado: 'Activo' }
 ])
+
+const goToEdit = () => {
+  router.push('/edit-crop')
+}
+
+const goToNew = () => {
+  router.push('/new-crop')
+}
 </script>
 
 <style scoped>
