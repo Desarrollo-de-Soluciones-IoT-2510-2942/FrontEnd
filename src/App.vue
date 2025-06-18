@@ -15,7 +15,7 @@ const route = useRoute()
         class="main"
     >
       <div class="toolbar">
-        <input type="text" class="search-input" placeholder="NUTRICONTROL" />
+        <input type="text" class="search-input" placeholder="Buscar en Nutricontrol..." />
         <div class="toolbar-icons">
           <button class="icon-btn">
             <img
@@ -70,10 +70,18 @@ const route = useRoute()
   padding: 0 15px;
   font-size: 16px;
   box-sizing: border-box;
+  color: #014728;
+  border: 1px solid #014728;
+  border-radius: 10px;
 }
 .search-input::placeholder {
-  color: #014728;
+  color: #012315;
+  opacity: 0.7;
 }
+input:focus {
+  outline: none;
+}
+
 .toolbar-icons {
   display: flex;
   align-items: center;
