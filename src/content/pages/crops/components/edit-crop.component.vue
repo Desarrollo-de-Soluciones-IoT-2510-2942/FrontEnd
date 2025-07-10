@@ -27,42 +27,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
-
 const cropId = parseInt(route.params.id, 10);
+const crop = ref({});
 
-// Mock data for crops
-const crops = [
-  { id: 1, name: 'Cultivo de Papas', date: '09/02/2025', stage: 'Germinación', quantity: '1 Tonelada' },
-  { id: 2, name: 'Cultivo de Camote', date: '14/02/2025', stage: 'Crecimiento', quantity: '2 Toneladas' }
-];
-
-const crop = ref(crops.find(c => c.id === cropId) || {});
+onMounted(() => {
+  const storedCrops = localStorage.getItem('cultivos');
+  const crops = storedCrops ? JSON.parse(storedCrops) : [];
+  crop.value = crops.find(c => c.id === cropId) || {};
+});
 
 const goBack = () => router.push('/crops');
 
 const saveCrop = () => {
-  // Obtener cultivos desde localStorage
   const storedCrops = localStorage.getItem('cultivos');
   const crops = storedCrops ? JSON.parse(storedCrops) : [];
-
-  // Buscar el cultivo por ID y actualizarlo
   const index = crops.findIndex(c => c.id === crop.value.id);
   if (index !== -1) {
     crops[index] = { ...crop.value };
-  } else {
-    crops.push({ ...crop.value }); // Si no existe, agregarlo
+    localStorage.setItem('cultivos', JSON.stringify(crops));
+    router.push('/crops');
   }
-
-  // Guardar los cultivos actualizados en localStorage
-  localStorage.setItem('cultivos', JSON.stringify(crops));
-
-  // Redirigir a la vista de cultivos
-  router.push('/crops');
 };
 </script>
 

@@ -35,6 +35,11 @@ const router = createRouter({
         { path: '/crops', component: AllCrops},
         { path: '/individual-crop/:id', component: IndividualCrop },
         { path: '/edit-crop/:id', component: EditCrop },
+        {
+            path: '/crops/create',
+            name: 'CreateCrop',
+            component: () => import('../content/pages/crops/components/create-crop.component.vue')
+        },
     ],
 });
 

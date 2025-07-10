@@ -58,19 +58,15 @@ const devices = ref([
   { id: 2, name: 'Actuador de Riego', code: 'US123-23', state: true, alerts: true }
 ])
 
-const cropId = parseInt(route.params.id, 10)
-const cropName = route.query.name
+const cropId = parseInt(route.params.id, 10);
 
-// Mock data for crops
-const crops = [
-  { id: 1, name: 'Cultivo de Papas', date: '09/02/2025', days: 54, stage: 'Germinación', state: 'Saludable', quantity: '1 Tonelada' },
-  { id: 2, name: 'Cultivo de Camote', date: '14/02/2025', days: 50, stage: 'Crecimiento', state: 'Saludable', quantity: '2 Toneladas' }
-]
+const storedCrops = localStorage.getItem('cultivos');
+const crops = storedCrops ? JSON.parse(storedCrops) : [];
 
-const selectedCrop = crops.find(crop => crop.id === cropId)
+const selectedCrop = ref(crops.find(crop => crop.id === cropId) || {});
 
-if (!selectedCrop) {
-  console.error(`No se encontró un cultivo con el ID: ${cropId}`)
+if (!selectedCrop.value) {
+  console.error(`No se encontró un cultivo con el ID: ${cropId}`);
 }
 
 const goBack = () => router.push('/crops')

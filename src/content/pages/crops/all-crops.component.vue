@@ -39,7 +39,7 @@
       </div>
     </div>
     <button class="add-button" @click="goToAdd">
-      <img src="/general-icons/check-icon.png" alt="Agregar"/>
+      <img src="/general-icons/add-icon.png" alt="Agregar"/>
     </button>
 
     <div v-if="showDeleteModal" class="modal-overlay" @click="closeDeleteModal">
@@ -56,15 +56,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
-const campoName = 'Campo Huancayo - 1'
-const cultivos = ref([])
-const showOptions = ref(null)
-const showDeleteModal = ref(false)
-const cultivoToDelete = ref(null)
+const router = useRouter();
+const campoName = 'Campo Huancayo - 1';
+const cultivos = ref([]);
+const showOptions = ref(null);
+const showDeleteModal = ref(false);
+const cultivoToDelete = ref(null);
+
+const loadCrops = () => {
+  const storedCrops = localStorage.getItem('cultivos');
+  cultivos.value = storedCrops ? JSON.parse(storedCrops) : [];
+  console.log('Cultivos cargados:', cultivos.value);
+};
+
+onMounted(() => {
+  loadCrops();
+});
 
 const toggleOptions = id => {
   showOptions.value = showOptions.value === id ? null : id
@@ -75,9 +85,11 @@ const closeOptions = () => {
 }
 
 const editCultivo = id => {
-  closeOptions()
-  router.push(`/edit-crop/${id}`)
-}
+  const selectedCrop = cultivos.value.find(c => c.id === id);
+  if (selectedCrop) {
+    router.push(`/edit-crop/${id}`);
+  }
+};
 
 const deleteCultivo = id => {
   cultivoToDelete.value = cultivos.value.find(c => c.id === id)
@@ -92,7 +104,9 @@ const closeDeleteModal = () => {
 
 const confirmDelete = () => {
   if (cultivoToDelete.value) {
-    cultivos.value = cultivos.value.filter(c => c.id !== cultivoToDelete.value.id)
+    const updatedCrops = cultivos.value.filter(c => c.id !== cultivoToDelete.value.id);
+    localStorage.setItem('cultivos', JSON.stringify(updatedCrops));
+    cultivos.value = updatedCrops; // Actualizar la UI
   }
   closeDeleteModal()
 }
@@ -102,24 +116,12 @@ const goBack = () => {
 }
 
 const goToAdd = () => {
-  router.push('/add-cultivo')
+  router.push('/crops/create');
 }
 
 const goToDetail = id => {
-  router.push({
-    path: `/individual-crop/${id}`,
-    query: { name: cultivos.value.find(c => c.id === id)?.name || '' }
-  })
-}
-
-const loadCrops = () => {
-  const storedCrops = localStorage.getItem('cultivos');
-  return storedCrops ? JSON.parse(storedCrops) : [];
+  router.push(`/individual-crop/${id}`);
 };
-
-onMounted(() => {
-  cultivos.value = loadCrops();
-});
 </script>
 
 <style scoped>
