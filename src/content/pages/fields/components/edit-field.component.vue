@@ -4,7 +4,7 @@
     <button class="btn-return" @click="onReturn">
       <img src="/general-icons/return-icon.png" alt="Regresar"/>
     </button>
-    <h3 class="sub-title">Nuevo Campo:</h3>
+    <h3 class="sub-title">Editar Campo:</h3>
     <div class="form-card">
       <div class="card-header">
         <img src="/general-icons/field-icon.png" alt="Campo" class="field-icon"/>
@@ -21,18 +21,130 @@
     <button class="btn-submit" @click="onSubmit">
       <img src="/general-icons/check-icon.png" alt="Guardar"/>
     </button>
+    
+    <!-- Success Modal -->
+    <div v-if="showSuccessModal" class="modal-overlay" @click="closeSuccessModal">
+      <div class="modal-content" @click.stop>
+        <div class="success-icon">✓</div>
+        <h3>¡Campo actualizado exitosamente!</h3>
+        <button class="ok-btn" @click="closeSuccessModal">OK</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
 const router = useRouter()
+const route = useRoute()
+
 const name = ref('')
 const hectareas = ref('')
 const estado = ref('')
+const showSuccessModal = ref(false)
+
+// Mock data - same as in all-fields component
+const defaultCampos = [
+  { id: 1, name: 'Campo Huancayo - 1', hectareas: 5, cultivos: 'Papa, Camote', estado: 'Activo' },
+  { id: 2, name: 'Campo Huancayo - 2', hectareas: 12, cultivos: 'Lechuga', estado: 'Activo' },
+  { id: 3, name: 'Campo Huancayo - 3', hectareas: 4, cultivos: 'Yuca, Papa', estado: 'Activo' }
+]
+
+onMounted(() => {
+  console.log('Route params:', route.params)
+  const fieldId = parseInt(route.params.id)
+  console.log('Field ID:', fieldId)
+  
+  // Load data from localStorage first, fallback to default if nothing exists
+  let campos = []
+  try {
+    const stored = localStorage.getItem('campos')
+    if (stored) {
+      campos = JSON.parse(stored)
+      console.log('Loaded from localStorage:', campos)
+    } else {
+      // If no localStorage data, set defaults and save them
+      campos = defaultCampos
+      localStorage.setItem('campos', JSON.stringify(defaultCampos))
+      console.log('Using default data and saving to localStorage')
+    }
+  } catch (error) {
+    console.error('Error loading from localStorage:', error)
+    campos = defaultCampos
+    localStorage.setItem('campos', JSON.stringify(defaultCampos))
+  }
+  
+  const field = campos.find(campo => campo.id === fieldId)
+  console.log('Found field:', field)
+  console.log('All available campos:', campos)
+  
+  if (field) {
+    name.value = field.name
+    hectareas.value = field.hectareas.toString()
+    estado.value = field.estado
+    console.log('Field data loaded:', { name: name.value, hectareas: hectareas.value, estado: estado.value })
+  } else {
+    console.log('Field not found for ID:', fieldId)
+    console.log('Available IDs:', campos.map(c => c.id))
+    // If field not found, redirect back to fields list
+    alert('Campo no encontrado')
+    router.push('/fields')
+  }
+})
+
 const onReturn = () => router.push('/fields')
-const onSubmit = () => router.push('/fields')
+const onSubmit = () => {
+  // Get the field ID from the route
+  const fieldId = parseInt(route.params.id)
+  
+  // Get existing fields from localStorage or use default
+  let existingFields = []
+  try {
+    const stored = localStorage.getItem('campos')
+    if (stored) {
+      existingFields = JSON.parse(stored)
+    } else {
+      // If no stored data, use the default campos
+      existingFields = defaultCampos
+    }
+  } catch {
+    existingFields = defaultCampos
+  }
+  
+  // Find the current field to preserve cultivos
+  const currentField = existingFields.find(c => c.id === fieldId)
+  
+  // Create updated field object
+  const updatedField = {
+    id: fieldId,
+    name: name.value,
+    hectareas: parseInt(hectareas.value),
+    estado: estado.value,
+    cultivos: currentField?.cultivos || ''
+  }
+  
+  // Update the specific field
+  const fieldIndex = existingFields.findIndex(campo => campo.id === fieldId)
+  if (fieldIndex !== -1) {
+    existingFields[fieldIndex] = updatedField
+  }
+  
+  // Save back to localStorage
+  localStorage.setItem('campos', JSON.stringify(existingFields))
+  
+  console.log('Field updated successfully:', updatedField)
+  
+  // Show success modal instead of alert
+  showSuccessModal.value = true
+}
+
+const closeSuccessModal = () => {
+  showSuccessModal.value = false
+  // Navigate back to fields list after closing modal
+  router.push('/fields')
+}
 </script>
 
 <style scoped>
@@ -119,5 +231,61 @@ const onSubmit = () => router.push('/fields')
 .btn-submit img {
   width: 24px;
   height: 24px;
+}
+
+/* Success Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+.success-icon {
+  width: 60px;
+  height: 60px;
+  background: #28a745;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: white;
+  font-weight: bold;
+  margin: 0 auto 20px auto;
+}
+.modal-content h3 {
+  font-size: 20px;
+  color: #004225;
+  margin: 0 0 24px 0;
+  font-weight: 600;
+}
+.ok-btn {
+  padding: 12px 32px;
+  background: #004225;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.ok-btn:hover {
+  background: #005530;
 }
 </style>

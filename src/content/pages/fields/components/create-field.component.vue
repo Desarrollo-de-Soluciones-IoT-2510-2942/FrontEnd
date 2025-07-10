@@ -27,6 +27,15 @@
     <button class="btn-submit" @click="saveCrop">
       <img src="/general-icons/check-icon.png" alt="Guardar"/>
     </button>
+    
+    <!-- Success Modal -->
+    <div v-if="showSuccessModal" class="modal-overlay" @click="closeSuccessModal">
+      <div class="modal-content" @click.stop>
+        <div class="success-icon">✓</div>
+        <h3>¡Campo creado exitosamente!</h3>
+        <button class="ok-btn" @click="closeSuccessModal">OK</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -37,8 +46,74 @@ const router = useRouter()
 const name = ref('')
 const hectareas = ref('')
 const estado = ref('')
+const showSuccessModal = ref(false)
+
+// Default data for consistency
+const defaultCampos = [
+  { id: 1, name: 'Campo Huancayo - 1', hectareas: 5, cultivos: 'Papa, Camote', estado: 'Activo' },
+  { id: 2, name: 'Campo Huancayo - 2', hectareas: 12, cultivos: 'Lechuga', estado: 'Activo' },
+  { id: 3, name: 'Campo Huancayo - 3', hectareas: 4, cultivos: 'Yuca, Papa', estado: 'Activo' }
+]
+
 const goBack = () => router.push('/fields')
-const saveCrop = () => router.push('/fields')
+
+const saveCrop = () => {
+  // Validate required fields
+  if (!name.value || !hectareas.value || !estado.value) {
+    alert('Por favor, completa todos los campos')
+    return
+  }
+  
+  // Get existing fields from localStorage or use default
+  let existingFields = []
+  try {
+    const stored = localStorage.getItem('campos')
+    if (stored) {
+      existingFields = JSON.parse(stored)
+      console.log('Existing fields from localStorage:', existingFields)
+    } else {
+      // If no localStorage data, start with defaults
+      existingFields = [...defaultCampos]
+      localStorage.setItem('campos', JSON.stringify(existingFields))
+      console.log('No localStorage data, using defaults:', existingFields)
+    }
+  } catch (error) {
+    console.error('Error loading from localStorage:', error)
+    existingFields = [...defaultCampos]
+    localStorage.setItem('campos', JSON.stringify(existingFields))
+  }
+  
+  // Generate new ID (highest existing ID + 1)
+  const newId = existingFields.length > 0 ? Math.max(...existingFields.map(campo => campo.id)) + 1 : 1
+  console.log('Generated new ID:', newId)
+  
+  // Create new field object
+  const newField = {
+    id: newId,
+    name: name.value,
+    hectareas: parseInt(hectareas.value),
+    estado: estado.value,
+    cultivos: '' // Empty cultivos for new field
+  }
+  
+  // Add new field to existing fields
+  existingFields.push(newField)
+  
+  // Save to localStorage
+  localStorage.setItem('campos', JSON.stringify(existingFields))
+  
+  console.log('New field created:', newField)
+  console.log('All fields after creation:', existingFields)
+  
+  // Show success modal
+  showSuccessModal.value = true
+}
+
+const closeSuccessModal = () => {
+  showSuccessModal.value = false
+  // Navigate back to fields list after closing modal
+  router.push('/fields')
+}
 </script>
 
 <style scoped>
@@ -131,5 +206,56 @@ const saveCrop = () => router.push('/fields')
 .btn-submit img {
   width: 24px;
   height: 24px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+}
+
+.success-icon {
+  font-size: 48px;
+  color: #22c55e;
+  margin-bottom: 16px;
+}
+
+.modal-content h3 {
+  color: #004225;
+  margin-bottom: 24px;
+  font-size: 20px;
+}
+
+.ok-btn {
+  background: #004225;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ok-btn:hover {
+  background: #005a2f;
 }
 </style>

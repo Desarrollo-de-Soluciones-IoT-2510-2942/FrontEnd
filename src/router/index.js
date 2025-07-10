@@ -29,7 +29,7 @@ const router = createRouter({
         { path: '/edit-profile', component: EditProfile},
         { path: '/all-analytics', component: AllAnalytics},
         { path: '/fields', component: AllFields},
-        { path: '/edit-field', component: EditField},
+        { path: '/edit-field/:id', component: EditField},
         { path: '/create-field', component: CreateField},
         { path: '/crops', component: AllCrops},
         { path: '/individual-crop', component: IndividualCrop},
