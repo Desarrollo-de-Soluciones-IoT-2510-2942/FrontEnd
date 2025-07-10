@@ -5,13 +5,13 @@
     </button>
     <div class="top-section">
       <div class="cultivation-card">
-        <h3 class="cultivation-title">Cultivos de Papas</h3>
+        <h3 class="cultivation-title">{{ selectedCrop.name }}</h3>
         <img src="/recommendations/cultivo-papa.jpg" alt="Cultivo de Papas" class="cultivation-img"/>
-        <p>Fecha de siembra: 09/02/2025</p>
-        <p>Días desde siembra: 54 días</p>
-        <p>Etapa de crecimiento: Germinación</p>
-        <p>Estado: Saludable</p>
-        <p>Cantidad: 1 Tonelada</p>
+        <p>Fecha de siembra: {{ selectedCrop.date }}</p>
+        <p>Días desde siembra: {{ selectedCrop.days }} días</p>
+        <p>Etapa de crecimiento: {{ selectedCrop.stage }}</p>
+        <p>Estado: {{ selectedCrop.state }}</p>
+        <p>Cantidad: {{ selectedCrop.quantity }}</p>
       </div>
       <div class="indicators-card">
         <h3 class="indicators-title">Indicadores</h3>
@@ -48,12 +48,31 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+
 const router = useRouter()
+const route = useRoute()
+
 const devices = ref([
   { id: 1, name: 'Sensor de Humedad', code: 'US123-01', state: true, alerts: false },
   { id: 2, name: 'Actuador de Riego', code: 'US123-23', state: true, alerts: true }
 ])
+
+const cropId = parseInt(route.params.id, 10)
+const cropName = route.query.name
+
+// Mock data for crops
+const crops = [
+  { id: 1, name: 'Cultivo de Papas', date: '09/02/2025', days: 54, stage: 'Germinación', state: 'Saludable', quantity: '1 Tonelada' },
+  { id: 2, name: 'Cultivo de Camote', date: '14/02/2025', days: 50, stage: 'Crecimiento', state: 'Saludable', quantity: '2 Toneladas' }
+]
+
+const selectedCrop = crops.find(crop => crop.id === cropId)
+
+if (!selectedCrop) {
+  console.error(`No se encontró un cultivo con el ID: ${cropId}`)
+}
+
 const goBack = () => router.push('/crops')
 const goToAddDevice = () => {}
 </script>

@@ -12,6 +12,7 @@ import EditField from "../content/pages/fields/components/edit-field.component.v
 import CreateField from "../content/pages/fields/components/create-field.component.vue";
 import AllCrops from "../content/pages/crops/all-crops.component.vue";
 import IndividualCrop from "../content/pages/crops/components/individual-crop.component.vue";
+import EditCrop from "../content/pages/crops/components/edit-crop.component.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -32,7 +33,8 @@ const router = createRouter({
         { path: '/edit-field/:id', component: EditField},
         { path: '/create-field', component: CreateField},
         { path: '/crops', component: AllCrops},
-        { path: '/individual-crop', component: IndividualCrop},
+        { path: '/individual-crop/:id', component: IndividualCrop },
+        { path: '/edit-crop/:id', component: EditCrop },
     ],
 });
 

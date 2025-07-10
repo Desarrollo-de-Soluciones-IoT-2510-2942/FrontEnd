@@ -36,6 +36,16 @@
         <button class="ok-btn" @click="closeSuccessModal">OK</button>
       </div>
     </div>
+
+    <!-- Validation Error Modal -->
+    <div v-if="showErrorModal" class="modal-overlay" @click="closeErrorModal">
+      <div class="modal-content" @click.stop>
+        <div class="error-icon">⚠️</div>
+        <h3>Error de Validación</h3>
+        <p>{{ errorMessage }}</p>
+        <button class="ok-btn" @click="closeErrorModal">OK</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,6 +57,8 @@ const name = ref('')
 const hectareas = ref('')
 const estado = ref('')
 const showSuccessModal = ref(false)
+const showErrorModal = ref(false)
+const errorMessage = ref('')
 
 // Default data for consistency
 const defaultCampos = [
@@ -57,13 +69,39 @@ const defaultCampos = [
 
 const goBack = () => router.push('/fields')
 
-const saveCrop = () => {
-  // Validate required fields
+const validateFields = () => {
   if (!name.value || !hectareas.value || !estado.value) {
-    alert('Por favor, completa todos los campos')
+    errorMessage.value = 'Por favor, completa todos los campos.'
+    showErrorModal.value = true
+    return false
+  }
+
+  if (!/^[a-zA-Z\s]+$/.test(name.value)) {
+    errorMessage.value = 'El nombre solo debe contener letras.'
+    showErrorModal.value = true
+    return false
+  }
+
+  if (isNaN(parseFloat(hectareas.value))) {
+    errorMessage.value = 'Las hectáreas deben ser un número válido.'
+    showErrorModal.value = true
+    return false
+  }
+
+  if (!/^[a-zA-Z\s]+$/.test(estado.value)) {
+    errorMessage.value = 'El estado solo debe contener letras.'
+    showErrorModal.value = true
+    return false
+  }
+
+  return true
+}
+
+const saveCrop = () => {
+  if (!validateFields()) {
     return
   }
-  
+
   // Get existing fields from localStorage or use default
   let existingFields = []
   try {
@@ -113,6 +151,10 @@ const closeSuccessModal = () => {
   showSuccessModal.value = false
   // Navigate back to fields list after closing modal
   router.push('/fields')
+}
+
+const closeErrorModal = () => {
+  showErrorModal.value = false
 }
 </script>
 
@@ -226,6 +268,7 @@ const closeSuccessModal = () => {
   background: white;
   border-radius: 12px;
   padding: 32px;
+  padding-bottom: 48px; /* Add extra padding to push the button lower */
   text-align: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   max-width: 400px;
@@ -235,6 +278,12 @@ const closeSuccessModal = () => {
 .success-icon {
   font-size: 48px;
   color: #22c55e;
+  margin-bottom: 16px;
+}
+
+.error-icon {
+  font-size: 48px;
+  color: #e63946;
   margin-bottom: 16px;
 }
 
@@ -253,6 +302,7 @@ const closeSuccessModal = () => {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s;
+  margin-top: 16px; /* Add margin to separate the button from the content */
 }
 
 .ok-btn:hover {
