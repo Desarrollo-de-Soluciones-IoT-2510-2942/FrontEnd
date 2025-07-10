@@ -86,8 +86,7 @@ const calendarWeeks = computed(() => {
   <div class="home-container">
     <div class="dashboard">
       <div class="header">
-        <h2>Bienvenido a NutriControl,</h2>
-        <h2 class="user-name">{{ dashboard.usuario.nombre }} {{ dashboard.usuario.apellido }}</h2>
+        <h2>Bienvenido a NutriControl, <span class="user-name">{{ dashboard.usuario.nombre }} {{ dashboard.usuario.apellido }}</span></h2>
       </div>
       <div class="cards-grid">
         <div class="card card-campos">
@@ -120,12 +119,12 @@ const calendarWeeks = computed(() => {
           <h3>{{ dashboard.calendario.mes }} {{ dashboard.calendario.anio }}</h3>
           <table class="calendar">
             <thead>
-            <tr><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr>
+              <tr><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr>
             </thead>
             <tbody>
-            <tr v-for="(week,i) in calendarWeeks" :key="i">
-              <td v-for="(day,j) in week" :key="j" :class="{ today: day === dashboard.calendario.diaActual }">{{ day }}</td>
-            </tr>
+              <tr v-for="(week,i) in calendarWeeks" :key="i">
+                <td v-for="(day,j) in week" :key="j" :class="{ today: day === dashboard.calendario.diaActual }">{{ day }}</td>
+              </tr>
             </tbody>
           </table>
           <div class="recomendation">• {{ dashboard.recomendacionDelDia }}</div>
@@ -141,54 +140,91 @@ const calendarWeeks = computed(() => {
 
 <style scoped>
 .home-container {
-  max-width: 1400px;
+  --primary: #014728;
+  --secondary: #9C7A36;
+  --card-bg: #fff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  max-width: 1600px;
   margin: 0 auto;
+  padding: 20px;
 }
 .dashboard {
-  padding: 20px;
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
 }
-.header h2 {
-  margin: 0;
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+.header h2:first-child {
+  font-size: 24px;
+  font-weight: 500;
 }
 .header .user-name {
-  color: #9C7A36;
-  margin-top: 5px;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--secondary);
 }
 .cards-grid {
   display: grid;
   grid-template-areas:
     "campos agua iot"
     "total calendario crecimiento";
-  grid-template-columns: 320px 1fr 300px;
-  grid-template-rows: 430px 250px;
+  grid-template-columns: 380px 1fr 480px;
+  grid-template-rows: 400px 350px;
   gap: 20px;
 }
+@media (max-width: 1024px) {
+  .cards-grid {
+    grid-template-areas:
+      "campos"
+      "agua"
+      "iot"
+      "total"
+      "calendario"
+      "crecimiento";
+    grid-template-columns: 1fr;
+  }
+}
 .card {
-  background: #fff;
-  border-radius: 8px;
+  background: var(--card-bg);
+  border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px var(--card-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px var(--card-shadow);
+}
+.card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--primary);
+}
 .card-campos {
   grid-area: campos;
 }
-.card-campos h3 {
-  font-size: 20px;
-}
 .card-campos .doughnut-chart {
-  width: 250px;
-  height: 250px;
+  width: 260px !important;
+  height: 260px !important;
+  max-width: 260px;
+  max-height: 260px;
 }
 .card-agua {
   grid-area: agua;
 }
 .card-agua .bar-chart {
-  width: 100%;
-  height: 200px;
+  width:85% !important;
+  height: 280px !important;
+  max-height: 280px;
 }
 .card-iot {
   grid-area: iot;
@@ -196,13 +232,22 @@ const calendarWeeks = computed(() => {
   gap: 15px;
 }
 .card-iot img {
-  width: 48px;
-  height: 48px;
+  width: 80px;
+  height: 80px;
+}
+.card-iot div {
+  text-align: center;
+}
+.card-iot span:first-child {
+  font-size: 22px;
+  font-weight: 600;
 }
 .card-iot .value {
-  font-size: 32px;
-  font-weight: bold;
-  color: #014728;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--primary);
+  display: block;
+  margin-top: 8px;
 }
 .card-total {
   grid-area: total;
@@ -210,63 +255,84 @@ const calendarWeeks = computed(() => {
   gap: 15px;
 }
 .card-total img {
-  width: 48px;
-  height: 48px;
+  width: 80px;
+  height: 80px;
+}
+.card-total div {
+  text-align: center;
+}
+.card-total span:first-child {
+  font-size: 22px;
+  font-weight: 600;
 }
 .card-total .value {
-  font-size: 32px;
-  font-weight: bold;
-  color: #014728;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--primary);
+  display: block;
+  margin-top: 8px;
 }
 .card-calendario {
   grid-area: calendario;
-  align-items: flex-start;
+  align-items: stretch;
 }
 .card-calendario .calendar {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 10px 0;
+  width: 80%;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
-.card-calendario th,
+.card-calendario th {
+  background: #f9f9f9;
+  font-weight: 500;
+  padding: 8px 0;
+  font-size: 12px;
+}
 .card-calendario td {
-  width: 14.28%;
+  padding: 8px 0;
   text-align: center;
-  padding: 5px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
+.card-calendario tr:last-child td {
+  border-bottom: none;
 }
 .card-calendario td.today {
-  background: #014728;
+  background: var(--primary);
   color: #fff;
   border-radius: 50%;
 }
 .card-calendario .recomendation {
-  margin-top: auto;
   font-size: 14px;
-  align-self: flex-start;
+  color: var(--primary);
 }
 .card-crecimiento {
   grid-area: crecimiento;
 }
 .card-crecimiento .growth-chart {
-  width: 100%;
-  height: 200px;
+  width: 100% !important;
+  height: 280px !important;
+  max-height: 280px;
 }
 .legend {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   margin-top: 10px;
   font-size: 14px;
 }
 .dot {
-  display: inline-block;
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  margin-right: 5px;
+  display: inline-block;
+  margin-right: 6px;
 }
 .dot.activos {
-  background: #014728;
+  background: var(--primary);
 }
 .dot.inactivos {
-  background: #9C7A36;
+  background: var(--secondary);
 }
 </style>
+
