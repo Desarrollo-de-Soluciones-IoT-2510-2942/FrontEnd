@@ -14,6 +14,7 @@ import AllCrops from "../content/pages/crops/all-crops.component.vue";
 import IndividualCrop from "../content/pages/crops/components/individual-crop.component.vue";
 import EditCrop from "../content/pages/crops/components/edit-crop.component.vue";
 
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -35,6 +36,7 @@ const router = createRouter({
         { path: '/crops', component: AllCrops},
         { path: '/individual-crop/:id', component: IndividualCrop },
         { path: '/edit-crop/:id', component: EditCrop },
+        { path: '/real-time-sensors',component: () => import('../content/pages/realtimedata/realtimesensor.component.vue') },
         {
             path: '/crops/create',
             name: 'CreateCrop',

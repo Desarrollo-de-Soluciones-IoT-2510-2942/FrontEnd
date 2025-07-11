@@ -31,6 +31,10 @@
         <img src="/sidebar/icons/membership-icon.png" width="30" height="30" alt="" />
         <span>Membresía</span>
       </router-link>
+      <router-link to="/real-time-sensors" class="nav-link">
+        <img src="/sidebar/icons/ICONOTIME.png" width="30" height="30" alt="" />
+        <span>Lectura de Sensores</span>
+      </router-link>
     </nav>
   </aside>
   <button class="burger-btn" v-if="!isOpen" @click="toggleSidebar">

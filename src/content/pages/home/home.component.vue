@@ -3,8 +3,15 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
 
+const storedUsername = localStorage.getItem('username') || 'Usuario'
+
 const dashboard = reactive({
-  usuario: { nombre: 'Hernan', apellido: 'Morales', creacionCuenta: '2023-10-01', suscripcion: 'ESTÁNDAR', correoElectronico: 'ernan@gmail.com' },
+  usuario: {
+    username: storedUsername,
+    creacionCuenta: '2023-10-01',
+    suscripcion: 'ESTÁNDAR',
+    correoElectronico: `${storedUsername}@nutricontrol.com`
+  },
   camposAgricolas: { activos: 5, inactivos: 1 },
   aguaAhorrada: { lunes: 5, martes: 3, miercoles: 6, jueves: 8, viernes: 4, sabado: 2, domingo: 3 },
   dispositivosIoT: 8,
@@ -86,8 +93,9 @@ const calendarWeeks = computed(() => {
   <div class="home-container">
     <div class="dashboard">
       <div class="header">
-        <h2>Bienvenido a NutriControl, <span class="user-name">{{ dashboard.usuario.nombre }} {{ dashboard.usuario.apellido }}</span></h2>
+        <h2>Bienvenido a NutriControl, <span class="user-name">{{ dashboard.usuario.username }}</span></h2>
       </div>
+
       <div class="cards-grid">
         <div class="card card-campos">
           <h3>Campos Agrícolas</h3>
@@ -97,10 +105,12 @@ const calendarWeeks = computed(() => {
             <span><span class="dot inactivos"></span> Campos Inactivos {{ dashboard.camposAgricolas.inactivos }}</span>
           </div>
         </div>
+
         <div class="card card-agua">
           <h3>Agua ahorrada (Litros)</h3>
           <canvas ref="barRef" class="bar-chart"></canvas>
         </div>
+
         <div class="card card-iot">
           <img src="/general-icons/iot-icon.png" alt="IoT">
           <div>
@@ -108,6 +118,7 @@ const calendarWeeks = computed(() => {
             <span class="value">{{ dashboard.dispositivosIoT }}</span>
           </div>
         </div>
+
         <div class="card card-total">
           <img src="/general-icons/total-crops-icon.png" alt="Cultivos">
           <div>
@@ -115,20 +126,22 @@ const calendarWeeks = computed(() => {
             <span class="value">{{ dashboard.totalCultivos }}</span>
           </div>
         </div>
+
         <div class="card card-calendario">
           <h3>{{ dashboard.calendario.mes }} {{ dashboard.calendario.anio }}</h3>
           <table class="calendar">
             <thead>
-              <tr><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr>
+            <tr><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr>
             </thead>
             <tbody>
-              <tr v-for="(week,i) in calendarWeeks" :key="i">
-                <td v-for="(day,j) in week" :key="j" :class="{ today: day === dashboard.calendario.diaActual }">{{ day }}</td>
-              </tr>
+            <tr v-for="(week,i) in calendarWeeks" :key="i">
+              <td v-for="(day,j) in week" :key="j" :class="{ today: day === dashboard.calendario.diaActual }">{{ day }}</td>
+            </tr>
             </tbody>
           </table>
           <div class="recomendation">• {{ dashboard.recomendacionDelDia }}</div>
         </div>
+
         <div class="card card-crecimiento">
           <h3>Crecimiento de cultivos</h3>
           <canvas ref="growthRef" class="growth-chart"></canvas>
@@ -137,7 +150,6 @@ const calendarWeeks = computed(() => {
     </div>
   </div>
 </template>
-
 <style scoped>
 .home-container {
   --primary: #014728;

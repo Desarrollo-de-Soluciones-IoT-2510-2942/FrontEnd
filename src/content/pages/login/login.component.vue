@@ -1,13 +1,38 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
-const email = ref('')
+const username = ref('')
 const password = ref('')
 
-const submit = () => {
-  router.push('/home')
+const submit = async () => {
+  try {
+    const response = await axios.post(
+        '/api/api/v1/User/login', // ← Proxy configurado en vite.config.js
+        {
+          username: username.value,
+          password: password.value
+        }
+    )
+
+    const { jwt } = response.data
+
+    // Guardar en localStorage
+    localStorage.setItem('jwt_token', jwt)
+    localStorage.setItem('username', username.value)
+
+    // Mostrar en consola
+    console.log('✅ Usuario logueado:', username.value)
+    console.log('✅ JWT guardado:', jwt)
+
+    alert('Inicio de sesión exitoso')
+    router.push('/home')
+  } catch (error) {
+    alert('Credenciales inválidas o error de red')
+    console.error('❌ Error en login:', error)
+  }
 }
 </script>
 
@@ -24,7 +49,7 @@ const submit = () => {
         <p class="tagline">Empieza a cultivar resultados</p>
         <h2 class="title">Inicia sesión</h2>
         <div class="fields">
-          <input v-model="email" type="email" placeholder="Correo electrónico" class="text-input" />
+          <input v-model="username" type="text" placeholder="Nombre de usuario" class="text-input" />
           <input v-model="password" type="password" placeholder="Contraseña" class="text-input" />
         </div>
         <button class="btn-login" @click="submit">Iniciar sesión</button>
