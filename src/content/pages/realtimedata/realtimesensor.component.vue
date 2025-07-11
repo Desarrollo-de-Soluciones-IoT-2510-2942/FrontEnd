@@ -9,6 +9,11 @@ const hasError = ref(false)
 const jwt = localStorage.getItem('jwt_token')
 const username = localStorage.getItem('username')
 
+const BASE_URL =
+    import.meta.env.MODE === 'development'
+        ? '/api'
+        : 'https://nutricontrolapifilesadministration-bvf4bbbpgpb5h5dw.brazilsouth-01.azurewebsites.net'
+
 onMounted(async () => {
   if (!jwt || !username) {
     console.error('JWT o username no están disponibles en localStorage')
@@ -25,7 +30,7 @@ onMounted(async () => {
       Authorization: `Bearer ${jwt}`
     }
 
-    const userUrl = `/api/api/Device/sensors/by-user/${encodeURIComponent(username)}`
+    const userUrl = `${BASE_URL}/api/Device/sensors/by-user/${encodeURIComponent(username)}`
     const sensorRes = await axios.get(userUrl, { headers })
 
     const sensors = sensorRes.data
@@ -33,7 +38,7 @@ onMounted(async () => {
 
     const promises = sensors.map(async (sensor) => {
       try {
-        const readingsUrl = `/api/api/Device/sensors/${sensor.id}/readings`
+        const readingsUrl = `${BASE_URL}/api/Device/sensors/${sensor.id}/readings`
         const readingRes = await axios.get(readingsUrl, { headers })
         const latest = readingRes.data.at(-1)
         return {
@@ -58,6 +63,7 @@ onMounted(async () => {
   }
 })
 </script>
+
 
 <template>
   <div class="sensor-wrapper">
