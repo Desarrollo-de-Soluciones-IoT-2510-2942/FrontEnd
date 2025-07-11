@@ -7,10 +7,16 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 
+// Detectar si estamos en desarrollo o producción
+const BASE_URL =
+    import.meta.env.MODE === 'development'
+        ? '/api' // usa el proxy configurado en vite.config.js
+        : 'https://nutricontrolapifilesadministration-bvf4bbbpgpb5h5dw.brazilsouth-01.azurewebsites.net'
+
 const submit = async () => {
   try {
     const response = await axios.post(
-        '/api/api/v1/User/login', // ← Proxy configurado en vite.config.js
+        `${BASE_URL}/api/v1/User/login`, // ← URL dinámica
         {
           username: username.value,
           password: password.value
@@ -35,6 +41,7 @@ const submit = async () => {
   }
 }
 </script>
+
 
 <template>
   <div class="login-container">
